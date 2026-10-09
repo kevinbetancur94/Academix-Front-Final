@@ -93,9 +93,9 @@ function Login() {
           <div className="options">
             <label className="remember-me">
                 <input
-                  type='checkbox'
-                  checked={recordar}
-                  onChange={(e) => setRecordar(e.target.checked)}/>
+                    type='checkbox'
+                    checked={recordar}
+                    onChange={(e) => setRecordar(e.target.checked)}/>
               Recordarme
             </label>
             <Link to="/recuperacion" className="forgot-password">
