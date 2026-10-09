@@ -1,0 +1,11 @@
+/* Estilos globales mínimos. Los estilos de cada página viven en src/css/ */
+html,
+body {
+  margin: 0;
+}
+
+/* Feedback visual: los botones deshabilitados (ej. mientras se envía un formulario) se ven apagados */
+[class^='pg-'] button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
