@@ -1,0 +1,207 @@
+/* Estilos de esta página. Todos los selectores empiezan con .pg-registro para que no choquen con los de otras páginas. */
+.pg-registro {
+    margin:0;
+    font-family: "poppins", sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 800px;
+    filter: drop-shadow(0 0 15px rgba(0,212,255,0.3));
+ 
+}
+.pg-registro .container {background-color:#16213e;
+backdrop-filter:blur(12px);
+padding: 40px 40px;
+border-radius: 20px;
+box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+width: 350px;
+text-align: center;
+color:white; 
+}
+.pg-registro .logo img {
+    width: 300px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    filter: drop-shadow(0 0 15px rgba(0,212,255,0.3));
+}
+.pg-registro h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #a8e6ff;  
+}
+.pg-registro .formulario input[type="text"], .pg-registro .formulario input[type="email"], .pg-registro .formulario input[type="password"] {
+    width: 300px;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff20;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.pg-registro .formulario input[type="tel"] {
+    width: 300px;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff20;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.pg-registro .formulario input::placeholder {
+color:#e0e0e0;
+}
+.pg-registro .formulario input:focus {
+    background-color: #ffffff30;
+    box-shadow: 0 0 5px #00afff;
+}
+.pg-registro .role-selection {
+    display: flex;
+    gap: 15px;
+    margin: 20px 0;
+    
+}
+.pg-registro .role-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.pg-registro .role-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #00d4ff;
+}
+.pg-registro .role-option input[type="radio"] {
+    display: none;
+}
+.pg-registro .role-option input[type="radio"]:checked + span {
+    color: #00d4ff;
+    font-weight: 600;
+}
+.pg-registro .role-option input[type="radio"]:checked ~ span {
+    color: #00d4ff;
+}
+.pg-registro .role-option:has(input[type="radio"]:checked) {
+    background: rgba(0, 212, 255, 0.2);
+    border-color: #00d4ff;
+}
+.pg-registro .role-option span {
+    color: #cbd5e0;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+.pg-registro button {
+background-color: #00aaff;
+color: white;
+font-size: 16px;
+border: none;
+padding: 10px;
+border-radius: 10px;
+width: 150px;
+cursor: pointer;
+transition: background-color 0.3s ease;
+text-align: center;
+
+
+}
+.pg-registro button:hover {
+    background-color: #008ecc;
+    transform: scale(1.05);
+}
+.pg-registro select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 10px;
+    background-color: #ffffff20;
+    color: white;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.pg-registro select:focus {
+    background-color: #ffffff30;
+    box-shadow: 0 0 5px #00afff;
+}
+.pg-registro select option {
+    background-color: #16213e;
+    color: white;
+}
+.pg-registro .role-selector {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+.pg-registro .role-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.pg-registro .role-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #e91b00;
+}
+.pg-registro .role-option input[type="radio"] {
+    display: none;
+}
+.pg-registro .role-option input[type="radio"]:checked + span {
+    color: #0dcf06;
+    font-weight: 600;
+}
+.pg-registro .role-option input[type="radio"]:checked ~ span {
+    color: #fffb05;
+}
+.pg-registro .role-option:has(input[type="radio"]:checked) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #faf8f9;
+}
+
+
+    
+
+/* Mensaje de error del formulario (agregado en la versión React) */
+.pg-registro .mensaje-error {
+    color: #d93025;
+    font-size: 14px;
+    margin: 8px 0;
+}
+.pg-registro .mensaje-exito {
+    color: #7CFC9A;
+    font-size: 14px;
+    margin: 8px 0;
+}
+
+/* ---- Responsive para celulares (agregado en la versión React) ---- */
+.pg-registro .container {
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
+}
+@media (max-width: 400px) {
+.pg-registro .formulario input[type="text"],
+.pg-registro .formulario input[type="email"],
+.pg-registro .formulario input[type="password"],
+.pg-registro .formulario input[type="tel"] {
+        width: 100%;
+    }
+.pg-registro .container {
+        padding: 30px 20px;
+    }
+}
