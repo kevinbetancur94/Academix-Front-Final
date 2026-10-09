@@ -1,10 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { RouterProvider } from 'react-router-dom'
 import './index.css'
-import Inicio from './pages/Inicio.jsx'
+import { router } from './router/index.jsx'
 
+// RouterProvider le entrega a toda la app el sistema de rutas definido en src/router.
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Inicio />
+    <RouterProvider router={router} />
   </StrictMode>,
 )
