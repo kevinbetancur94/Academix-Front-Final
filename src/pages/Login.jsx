@@ -15,6 +15,7 @@ function Login() {
   const [rol, setRol] = useState('estudiante')
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
+  const [recordar, setRecordar] = useState(false)
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
   const navigate = useNavigate() // permite cambiar de página desde el código
@@ -28,7 +29,7 @@ function Login() {
 
     // Objeto estructurado con lo capturado (lo pide la rúbrica: verlo por consola).
     // OJO: en un proyecto real NUNCA se imprime la contraseña; aquí es solo práctica.
-    const datos = { rol, usuario, password }
+    const datos = { rol, usuario, password, recordar }
     console.log('Datos del formulario de login:', datos)
 
     setError('')
@@ -91,7 +92,10 @@ function Login() {
 
           <div className="options">
             <label className="remember-me">
-              <input type="checkbox" />
+                <input
+                    type='checkbox'
+                    checked={recordar}
+                    onChange={(e) => setRecordar(e.target.checked)}/>
               Recordarme
             </label>
             <Link to="/recuperacion" className="forgot-password">
