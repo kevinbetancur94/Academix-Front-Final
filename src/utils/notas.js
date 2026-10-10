@@ -57,3 +57,21 @@ export function calcularTendencia(notas) {
   return 'estable'
 }
 
+// Recibe las materias de un estudiante, por ejemplo:
+// [{ nombre: 'Matemáticas', notas: [2.5, 2.8] }, { nombre: 'Español', notas: [4.5, 4] }]
+// y devuelve su promedio general y las materias que va perdiendo
+export function resumenEstudiante(materias) {
+  const promedios = materias.map((m) => calcularPromedio(m.notas))
+  const promedioGeneral = calcularPromedio(promedios)
+  const materiasEnRiesgo = materias
+    .filter((m) => calcularPromedio(m.notas) < NOTA_APROBATORIA)
+    .map((m) => m.nombre)
+
+  return {
+    promedioGeneral,
+    color: nivelColor(promedioGeneral),
+    materiasEnRiesgo,
+    enRiesgo: materiasEnRiesgo.length > 0,
+  }
+}
+
