@@ -48,4 +48,12 @@ export function nivelColor(nota) {
   return 'rojo'
 }
 
+// Compara la primera y la última nota para saber si el estudiante va mejorando
+export function calcularTendencia(notas) {
+  if (!notas || notas.length < 2) return 'estable'
+  const diferencia = notas[notas.length - 1] - notas[0]
+  if (diferencia > 0.2) return 'sube'
+  if (diferencia < -0.2) return 'baja'
+  return 'estable'
+}
 
