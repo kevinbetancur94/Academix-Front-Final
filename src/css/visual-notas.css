@@ -1,0 +1,124 @@
+/* Estilos de la vista de notas del estudiante */
+.visual-notas {
+  min-height: 100vh;
+  padding: 32px 24px;
+  background: #f5f7fa;
+  color: #263447;
+  font-family: Arial, sans-serif;
+}
+
+.visual-notas .header,
+.vn-contenido {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Encabezado con logo y usuario */
+.visual-notas .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.visual-notas .header-logo img {
+  height: 48px;
+}
+
+.visual-notas .user-info {
+  text-align: right;
+}
+
+.visual-notas .name {
+  font-weight: 700;
+}
+
+.visual-notas .role {
+  color: #687588;
+  font-size: 14px;
+}
+
+/* Tarjetas del resumen: en celular quedan una debajo de otra */
+.vn-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.vn-tarjeta {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgb(30 50 70 / 5%);
+}
+
+.vn-tarjeta h2 {
+  margin-top: 0;
+}
+
+.vn-etiqueta {
+  margin: 0 0 8px;
+  color: #687588;
+  font-size: 14px;
+}
+
+.vn-valor {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Aviso cuando el estudiante va perdiendo materias */
+.vn-alerta {
+  margin-bottom: 24px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #fde8e8;
+  color: #a12b2b;
+}
+
+/* Tabla de materias: en celular se puede deslizar de lado */
+.vn-tabla-contenedor {
+  overflow-x: auto;
+}
+
+.vn-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vn-tabla th,
+.vn-tabla td {
+  padding: 12px;
+  border-bottom: 1px solid #e4e9ef;
+  text-align: left;
+}
+
+.vn-tabla th {
+  color: #687588;
+  font-size: 14px;
+}
+
+/* Color de la nota según qué tan buena es */
+.vn-nota {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.vn-nota.verde {
+  background: #e3f4ec;
+  color: #1f6b4a;
+}
+
+.vn-nota.amarillo {
+  background: #fff4d6;
+  color: #8a6400;
+}
+
+.vn-nota.rojo {
+  background: #fde8e8;
+  color: #a12b2b;
+}
