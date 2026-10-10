@@ -1,0 +1,121 @@
+
+.acudientes {
+  min-height: 100vh;
+  padding: 40px 24px;
+  background: #f5f7fa;
+  color: #263447;
+  font-family: Arial, sans-serif;
+}
+
+.acudientes-header,
+.acudientes-contenido {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.acudientes-header {
+  margin-bottom: 36px;
+}
+
+.acudientes-etiqueta {
+  color: #357a68;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.acudientes-header h1 {
+  margin: 12px 0;
+  font-size: 32px;
+}
+
+.acudientes-header p,
+.acudientes-descripcion {
+  color: #687588;
+  line-height: 1.6;
+}
+
+.acudientes-contenido h2 {
+  margin-bottom: 8px;
+  font-size: 23px;
+}
+
+.acudientes-lista {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.acudiente-tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgb(30 50 70 / 5%);
+}
+
+.acudiente-avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #e1efe9;
+  color: #286653;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.acudiente-info {
+  flex: 1;
+}
+
+.acudiente-info h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+}
+
+.acudiente-info p {
+  margin: 0;
+  color: #687588;
+  font-size: 13px;
+}
+
+.acudiente-boton {
+  padding: 11px 16px;
+  border-radius: 8px;
+  background: #286653;
+  color: #fff;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.acudiente-boton:hover {
+  background: #1d4f40;
+}
+
+@media (max-width: 600px) {
+  .acudientes {
+    padding: 28px 16px;
+  }
+
+  .acudientes-header h1 {
+    font-size: 26px;
+  }
+
+  .acudiente-tarjeta {
+    flex-wrap: wrap;
+    padding: 16px;
+  }
+
+  .acudiente-boton {
+    width: 100%;
+    text-align: center;
+  }
+}
