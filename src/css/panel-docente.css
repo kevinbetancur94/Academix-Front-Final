@@ -1,0 +1,151 @@
+/* Estilos del panel docente */
+.panel-docente {
+  min-height: 100vh;
+  padding: 32px 24px;
+  background: #f5f7fa;
+  color: #263447;
+  font-family: Arial, sans-serif;
+}
+
+.panel-docente .header,
+.panel-contenido {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Encabezado con logo y usuario */
+.panel-docente .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.panel-docente .header-logo img {
+  height: 48px;
+}
+
+.panel-docente .user-info {
+  text-align: right;
+}
+
+.panel-docente .name {
+  font-weight: 700;
+}
+
+.panel-docente .role {
+  color: #687588;
+  font-size: 14px;
+}
+
+.panel-tarjeta {
+  margin-bottom: 24px;
+  padding: 24px;
+  background: #fff;
+  border: 1px solid #e4e9ef;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgb(30 50 70 / 5%);
+}
+
+.panel-tarjeta h2 {
+  margin-top: 0;
+}
+
+/* Formulario para registrar notas */
+.panel-formulario {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.panel-formulario label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.panel-formulario select,
+.panel-formulario input {
+  padding: 10px;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.panel-formulario button {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #357a68;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.panel-formulario button:hover {
+  background: #2a6254;
+}
+
+/* Mensajes de éxito y error */
+.panel-mensaje {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.panel-mensaje.exito {
+  background: #e3f4ec;
+  color: #1f6b4a;
+}
+
+.panel-mensaje.error {
+  background: #fde8e8;
+  color: #a12b2b;
+}
+
+/* Tabla de estudiantes: en celular se puede deslizar de lado */
+.panel-tabla-contenedor {
+  overflow-x: auto;
+}
+
+.panel-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.panel-tabla th,
+.panel-tabla td {
+  padding: 12px;
+  border-bottom: 1px solid #e4e9ef;
+  text-align: left;
+}
+
+.panel-tabla th {
+  color: #687588;
+  font-size: 14px;
+}
+
+/* Color del promedio según la nota */
+.promedio {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.promedio.verde {
+  background: #e3f4ec;
+  color: #1f6b4a;
+}
+
+.promedio.amarillo {
+  background: #fff4d6;
+  color: #8a6400;
+}
+
+.promedio.rojo {
+  background: #fde8e8;
+  color: #a12b2b;
+}
