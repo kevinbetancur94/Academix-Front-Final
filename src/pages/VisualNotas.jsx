@@ -1,86 +1,90 @@
 import Encabezado from '../components/Encabezado.jsx'
-import { calcularPromedio, calcularTendencia, nivelColor, resumenEstudiante } from '../utils/notas.js'
+import NotaBadge from '../components/NotaBadge.jsx'
+import Cargando from '../components/Cargando.jsx'
+import MensajeError from '../components/MensajeError.jsx'
+import { useCargarDatos } from '../hooks/useCargarDatos.js'
+import { obtenerHijo } from '../services/hijosService.js'
+import { resumenEstudiante } from '../utils/notas.js'
 import '../css/visual-notas.css'
 
-// Materias y notas del estudiante (datos de ejemplo)
-const materias = [
-  { nombre: 'Matemáticas', notas: [2.5, 2.8, 3.2] },
-  { nombre: 'Español', notas: [4.0, 4.3, 4.5] },
-  { nombre: 'Ciencias', notas: [3.8, 3.5, 3.4] },
-  { nombre: 'Inglés', notas: [4.6, 4.8, 5.0] },
-  { nombre: 'Sociales', notas: [2.6, 2.9, 2.7] },
-]
-
-// Flechas para mostrar si la nota va subiendo o bajando
-const flechas = { sube: '↑ Sube', baja: '↓ Baja', estable: '→ Estable' }
+// Vista del estudiante. Por ahora muestra a Juan (cuando haya login real, el id vendrá de la sesión).
+const ID_ESTUDIANTE = 'juan'
 
 function VisualNotas() {
-  // resumenEstudiante viene de utils/notas.js: calcula promedio general y riesgo
-  const resumen = resumenEstudiante(materias)
+  // El componente pide los datos al servicio mediante el hook. Estados: cargando / error / datos.
+  const { datos: estudiante, cargando, error } = useCargarDatos(obtenerHijo, ID_ESTUDIANTE)
+
+  if (cargando) return <div className="pg-notas"><Cargando texto="Cargando tus calificaciones..." /></div>
+  if (error) return <div className="pg-notas"><MensajeError mensaje={error} /></div>
+
+  const resumen = resumenEstudiante(estudiante.materias)
 
   return (
-    <main className="visual-notas">
-      <Encabezado nombre="Juan Pérez" rol="Estudiante · Grado 9°" />
+    <div className="pg-notas">
+      <Encabezado nombre={estudiante.nombre} rol={`Estudiante - Grado ${estudiante.grado.split(' ')[0]}`} />
 
-      <div className="vn-contenido">
-        <section className="vn-resumen">
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Promedio general</p>
-            <p className="vn-valor">
-              <span className={`vn-nota ${resumen.color}`}>{resumen.promedioGeneral}</span>
-            </p>
-          </article>
+      <div className="container">
+        <div className="student-card">
+          <h2>Información Académica</h2>
+          <div className="info-grid">
+            <div className="info-item">
+              <div className="label">Período Académico</div>
+              <div className="value">2025 - Período 3</div>
+            </div>
+            <div className="info-item">
+              <div className="label">Curso</div>
+              <div className="value">{estudiante.grado}</div>
+            </div>
+            <div className="info-item">
+              <div className="label">Última Actualización</div>
+              <div className="value">15 Oct 2025</div>
+            </div>
+            <div className="info-item">
+              <div className="label">Estado</div>
+              <div className="value">Activo</div>
+            </div>
+          </div>
+        </div>
 
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Materias</p>
-            <p className="vn-valor">{materias.length}</p>
-          </article>
-
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Materias en riesgo</p>
-            <p className="vn-valor">{resumen.materiasEnRiesgo.length}</p>
-          </article>
-        </section>
-
-        {/* Este aviso solo aparece si el estudiante va perdiendo alguna materia */}
-        {resumen.enRiesgo && (
-          <p className="vn-alerta">
-            Atención: vas perdiendo {resumen.materiasEnRiesgo.join(', ')}. Habla con tu docente.
-          </p>
-        )}
-
-        <section className="vn-tarjeta">
-          <h2>Mis notas por materia</h2>
-          <div className="vn-tabla-contenedor">
-            <table className="vn-tabla">
+        <div className="grades-section">
+          <h2>Mis Calificaciones</h2>
+          <div className="table-container">
+            <table className="grades-table">
               <thead>
                 <tr>
                   <th>Materia</th>
-                  <th>Notas</th>
+                  <th>Docente</th>
+                  <th>Actividad 1</th>
+                  <th>Actividad 2</th>
+                  <th>Actividad 3</th>
                   <th>Promedio</th>
-                  <th>Tendencia</th>
+                  <th>Fecha</th>
                 </tr>
               </thead>
               <tbody>
-                {materias.map((m) => {
-                  const promedio = calcularPromedio(m.notas)
-                  return (
-                    <tr key={m.nombre}>
-                      <td>{m.nombre}</td>
-                      <td>{m.notas.join(' · ')}</td>
-                      <td>
-                        <span className={`vn-nota ${nivelColor(promedio)}`}>{promedio}</span>
-                      </td>
-                      <td>{flechas[calcularTendencia(m.notas)]}</td>
-                    </tr>
-                  )
-                })}
+                {/* .map() recorre la lista y crea una fila por materia */}
+                {resumen.filas.map((m) => (
+                  <tr key={m.materia}>
+                    <td className="subject-name">{m.materia}</td>
+                    <td className="teacher-name">{m.docente}</td>
+                    {m.notas.map((nota, i) => (
+                      <td key={i}><NotaBadge valor={nota} /></td>
+                    ))}
+                    <td><NotaBadge valor={m.promedio} /></td>
+                    <td className="date">{m.fecha}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-        </section>
+
+          <div className="average-card">
+            <div className="label">Promedio General del Período</div>
+            <div className="value">{resumen.promedioGeneral.toFixed(1)}</div>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   )
 }
 
