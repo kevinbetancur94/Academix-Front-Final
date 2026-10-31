@@ -10,7 +10,9 @@ export function obtenerMisNotas(estudianteId) {
     const estudiante = hijos.find((h) => h.id === estudianteId)
     return simularRespuesta(estudiante ?? null)
   }
-  return peticion('/estudiante/notas')
+  if (!estudianteId) return Promise.resolve(null)
+  // Si el estudiante todavía no tiene notas se devuelve null (la página muestra un aviso)
+  return peticion(`/estudiantes/${estudianteId}/notas`).then((e) => (e.materias.length > 0 ? e : null))
 }
 
 // Hijos de UN acudiente (cada acudiente solo recibe a los suyos).

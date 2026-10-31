@@ -21,7 +21,7 @@ function VisualNotas() {
   if (!estudiante) {
     return (
       <div className="pg-visual-notas">
-        <Encabezado nombre={usuario.nombre} rol={`Estudiante · ${usuario.grado}° Grado`} />
+        <Encabezado nombre={usuario.nombre} rol={`Estudiante · Grado ${usuario.grado}`} />
         <main className="contenido">
           <h1>Mis notas</h1>
           <p>Aún no tienes notas registradas. Cuando tus docentes las publiquen, aparecerán aquí.</p>

@@ -5,7 +5,7 @@ import { peticion, simularRespuesta } from './api.js'
 
 export function obtenerTareas() {
   if (USAR_MOCK) return simularRespuesta(tareasIniciales)
-  return peticion('/tareas')
+  return peticion('/calendario/tareas')
 }
 
 export function obtenerFestivos() {
@@ -16,5 +16,5 @@ export function obtenerFestivos() {
 // Crea una tarea y devuelve la tarea ya con su id (el backend real asignaría el id).
 export function crearTarea(tarea) {
   if (USAR_MOCK) return simularRespuesta({ ...tarea, id: Date.now() })
-  return peticion('/tareas', { method: 'POST', body: tarea })
+  return peticion('/calendario/tareas', { method: 'POST', body: tarea })
 }

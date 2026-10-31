@@ -103,7 +103,7 @@ function Registro() {
               <select id="grado" name="grado" value={form.grado} onChange={manejarCambio} required>
                 <option value="">Seleccione Grado</option>
                 {grados.map((g) => (
-                  <option key={g} value={g}>{g}° Grado</option>
+                  <option key={g} value={g}>Grado {g}</option>
                 ))}
               </select>
             </>

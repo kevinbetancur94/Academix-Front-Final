@@ -3,9 +3,10 @@ import { USAR_MOCK } from '../config.js'
 import { materiasDocente, estudiantesPorMateria } from '../data/estudiantes.js'
 import { peticion, simularRespuesta, simularError } from './api.js'
 
-export function obtenerMateriasDocente() {
+// docenteId = usuario.id del docente que inició sesión
+export function obtenerMateriasDocente(docenteId) {
   if (USAR_MOCK) return simularRespuesta(materiasDocente)
-  return peticion('/docente/materias')
+  return peticion(`/docentes/${docenteId}/materias`)
 }
 
 // materiaId = 'mat-10a'... Devuelve los estudiantes de esa materia con sus notas.

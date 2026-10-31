@@ -1,8 +1,11 @@
 // Datos de ejemplo del calendario escolar.
 
-export const materias = ['Matemáticas', 'Ciencias', 'Historia', 'Literatura', 'Inglés', 'Física', 'Química', 'Arte', 'Educación Física', 'Tecnología']
-export const tipos = ['Tarea', 'Proyecto', 'Examen', 'Presentación', 'Investigación', 'Exposición', 'Laboratorio', 'Quiz']
-export const grados = ['6', '7', '8', '9', '10', '11']
+// Las mismas materias de la base de datos (academix_datos/materias.csv)
+export const materias = ['Matemáticas', 'Español', 'Ciencias Naturales', 'Inglés', 'Ciencias Sociales', 'Física', 'Química', 'Educación Física', 'Tecnología', 'Artes']
+// Los mismos tipos que acepta el backend (enum TipoTarea: TAREA, INVESTIGACION, LABORATORIO)
+export const tipos = ['Tarea', 'Investigación', 'Laboratorio']
+// Grados con grupo, como están en la base de datos ("7B", "10A")
+export const grados = ['6A', '6B', '7A', '7B', '8A', '8B', '9A', '9B', '10A', '10B', '11A', '11B']
 
 // Fecha en formato 'AAAA-MM-DD' (así la entrega el <input type="date">)
 export const tareasIniciales = [

@@ -24,10 +24,13 @@ function notaInvalida(texto) {
 // 1) Este componente pide las materias del docente (spinner / error).
 function PanelDocente() {
   const { usuario } = useAuth()
-  const { datos: materias, cargando, error } = useCargarDatos(obtenerMateriasDocente)
+  const { datos: materias, cargando, error } = useCargarDatos(obtenerMateriasDocente, usuario.id)
 
   if (cargando) return <div className="pg-panel-docente"><Cargando texto="Cargando tu panel..." /></div>
   if (error) return <div className="pg-panel-docente"><MensajeError mensaje={error} /></div>
+  if (materias.length === 0) {
+    return <div className="pg-panel-docente"><MensajeError mensaje="Todavía no tienes materias asignadas." /></div>
+  }
 
   return <PanelContenido materias={materias} nombreDocente={usuario.nombre} />
 }

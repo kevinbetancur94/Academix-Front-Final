@@ -122,7 +122,7 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
           </div>
           <div className="user-info" style={{ display: 'flex' }}>
             <span className="user-badge">
-              {esProfesor ? '👩‍🏫 Docente' : `👨‍🎓 Estudiante - ${usuario.grado}° Grado`}
+              {esProfesor ? '👩‍🏫 Docente' : `👨‍🎓 Estudiante - Grado ${usuario.grado}`}
             </span>
           </div>
         </div>
@@ -136,7 +136,7 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
                 <FiltroLista titulo="📚 Filtrar por Materia" opciones={materias} activo={filtros.materia} onElegir={(v) => alternarFiltro('materia', v)} />
                 <FiltroLista titulo="🎯 Filtrar por Tipo" opciones={tipos} activo={filtros.tipo} onElegir={(v) => alternarFiltro('tipo', v)} />
                 {esProfesor && (
-                  <FiltroLista titulo="👥 Filtrar por Grado" opciones={grados} activo={filtros.grado} onElegir={(v) => alternarFiltro('grado', v)} formato={(g) => `${g}° Grado`} />
+                  <FiltroLista titulo="👥 Filtrar por Grado" opciones={grados} activo={filtros.grado} onElegir={(v) => alternarFiltro('grado', v)} formato={(g) => `Grado ${g}`} />
                 )}
                 <div className="filter-section">
                   <h3>🇨🇴 Festivos Colombia 2025</h3>
@@ -185,7 +185,7 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
                     <div className="task-meta">
                       <span className="tag tag-subject">{t.materia}</span>
                       <span className="tag tag-type">{t.tipo}</span>
-                      <span className="tag">{t.grado}° Grado</span>
+                      <span className="tag">Grado {t.grado}</span>
                       <span className="tag">📅 {t.fecha.slice(8)}/{t.fecha.slice(5, 7)}/{t.fecha.slice(0, 4)}</span>
                     </div>
                     {t.descripcion && <p>{t.descripcion}</p>}
@@ -214,7 +214,7 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
             </div>
             <CampoSelect etiqueta="Materia" vacio="Selecciona una materia" opciones={materias} valor={nuevaTarea.materia} onCambio={(v) => setNuevaTarea({ ...nuevaTarea, materia: v })} />
             <CampoSelect etiqueta="Tipo de Actividad" vacio="Selecciona el tipo" opciones={tipos} valor={nuevaTarea.tipo} onCambio={(v) => setNuevaTarea({ ...nuevaTarea, tipo: v })} />
-            <CampoSelect etiqueta="Grado" vacio="Selecciona el grado" opciones={grados} formato={(g) => `${g}° Grado`} valor={nuevaTarea.grado} onCambio={(v) => setNuevaTarea({ ...nuevaTarea, grado: v })} />
+            <CampoSelect etiqueta="Grado" vacio="Selecciona el grado" opciones={grados} formato={(g) => `Grado ${g}`} valor={nuevaTarea.grado} onCambio={(v) => setNuevaTarea({ ...nuevaTarea, grado: v })} />
             <div className="form-group">
               <label>Fecha de Entrega</label>
               <input type="date" value={nuevaTarea.fecha} onChange={(e) => setNuevaTarea({ ...nuevaTarea, fecha: e.target.value })} />
