@@ -1,66 +1,54 @@
-
+import { Link } from 'react-router-dom'
+import Encabezado from '../components/Encabezado.jsx'
+import NotaBadge from '../components/NotaBadge.jsx'
+import Cargando from '../components/Cargando.jsx'
+import MensajeError from '../components/MensajeError.jsx'
+import { useCargarDatos } from '../hooks/useCargarDatos.js'
+import { useAuth } from '../hooks/useAuth.js'
+import { obtenerHijos } from '../services/hijosService.js'
+import { resumenEstudiante } from '../utils/notas.js'
 import '../css/acudientes.css'
 
-const hijos = [
-  {
-    id: 'juan',
-    nombre: 'Juan',
-    grado: 'Información académica por consultar',
-  },
-  {
-    id: 'sofia',
-    nombre: 'Sofía',
-    grado: 'Información académica por consultar',
-  },
-  {
-    id: 'carlos',
-    nombre: 'Carlos',
-    grado: 'Información académica por consultar',
-  },
-]
-
+// Lista de los hijos del acudiente. Cada tarjeta es un <Link> a /acudiente/:hijoId
 function AcudienteLista() {
+  const { usuario } = useAuth()
+  // Se piden solo los hijos de ESTE acudiente
+  const { datos: hijos, cargando, error } = useCargarDatos(obtenerHijos, usuario.id)
+
+  if (cargando) return <div className="pg-acudiente"><Cargando texto="Cargando a tus hijos..." /></div>
+  if (error) return <div className="pg-acudiente"><MensajeError mensaje={error} /></div>
+
   return (
-    <main className="acudientes">
-      <header className="acudientes-header">
-        <span className="acudientes-etiqueta">ACADEMIX</span>
-        <h1>Panel del acudiente</h1>
-        <p>
-          Consulta la información de tus hijos
-          y accede a sus detalles académicos.
-        </p>
-      </header>
+    <div className="pg-acudiente">
+      <Encabezado nombre={usuario.nombre} rol="Acudiente" />
 
-      <section className="acudientes-contenido">
-        <h2>Mis hijos</h2>
-        <p className="acudientes-descripcion">
-          Selecciona un estudiante para consultar
-          su información.
-        </p>
+      <main className="contenido">
+        <h1>Mis hijos</h1>
+        <p className="descripcion">Selecciona un estudiante para consultar sus notas, alertas y tendencias.</p>
 
-        <div className="acudientes-lista">
-          {hijos.map((hijo) => (
-            <article className="acudiente-tarjeta" key={hijo.id}>
-              <div className="acudiente-avatar" aria-hidden="true">
-                {hijo.nombre.charAt(0)}
-              </div>
+        {hijos.length === 0 && <p className="descripcion">Todavía no tienes estudiantes vinculados a tu cuenta.</p>}
 
-              <div className="acudiente-info">
-                <h3>{hijo.nombre}</h3>
-                <p>{hijo.grado}</p>
-              </div>
-
-              <a
-                className="acudiente-boton"
-                href={`/acudiente/${hijo.id}`}
-              >
-                Ver detalle
-              </a>
-            </article>
-          ))}
+        <div className="lista-hijos">
+          {hijos.map((hijo) => {
+            const resumen = resumenEstudiante(hijo.materias)
+            return (
+              <Link className="tarjeta-hijo" to={`/acudiente/${hijo.id}`} key={hijo.id}>
+                <div className="avatar" aria-hidden="true">{hijo.nombre.charAt(0)}</div>
+                <div className="info">
+                  <h2>{hijo.nombre}</h2>
+                  <p>Grado {hijo.grado}</p>
+                </div>
+                <div className="promedio">
+                  <span>Promedio</span>
+                  <NotaBadge nota={resumen.promedioGeneral} />
+                </div>
+                {resumen.enRiesgo && <span className="alerta-mini">⚠️ {resumen.materiasEnRiesgo.length} en riesgo</span>}
+              </Link>
+            )
+          })}
         </div>
-      </section>
-    </main>
+      </main>
+    </div>
   )
 }
 

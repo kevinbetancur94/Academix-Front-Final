@@ -1,86 +1,87 @@
 import Encabezado from '../components/Encabezado.jsx'
-import { calcularPromedio, calcularTendencia, nivelColor, resumenEstudiante } from '../utils/notas.js'
+import NotaBadge from '../components/NotaBadge.jsx'
+import Cargando from '../components/Cargando.jsx'
+import MensajeError from '../components/MensajeError.jsx'
+import { useCargarDatos } from '../hooks/useCargarDatos.js'
+import { useAuth } from '../hooks/useAuth.js'
+import { obtenerMisNotas } from '../services/hijosService.js'
+import { calcularPromedio, calcularTendencia, resumenEstudiante, ICONOS_TENDENCIA } from '../utils/notas.js'
 import '../css/visual-notas.css'
 
-// Materias y notas del estudiante (datos de ejemplo)
-const materias = [
-  { nombre: 'Matemáticas', notas: [2.5, 2.8, 3.2] },
-  { nombre: 'Español', notas: [4.0, 4.3, 4.5] },
-  { nombre: 'Ciencias', notas: [3.8, 3.5, 3.4] },
-  { nombre: 'Inglés', notas: [4.6, 4.8, 5.0] },
-  { nombre: 'Sociales', notas: [2.6, 2.9, 2.7] },
-]
-
-// Flechas para mostrar si la nota va subiendo o bajando
-const flechas = { sube: '↑ Sube', baja: '↓ Baja', estable: '→ Estable' }
-
+// Vista del estudiante: sus notas por materia y su promedio.
+// Solo muestra las notas del estudiante que inició sesión (usuario.estudianteId).
 function VisualNotas() {
-  // resumenEstudiante viene de utils/notas.js: calcula promedio general y riesgo
-  const resumen = resumenEstudiante(materias)
+  const { usuario } = useAuth()
+  const { datos: estudiante, cargando, error } = useCargarDatos(obtenerMisNotas, usuario.estudianteId)
+
+  if (cargando) return <div className="pg-visual-notas"><Cargando texto="Cargando tus notas..." /></div>
+  if (error) return <div className="pg-visual-notas"><MensajeError mensaje={error} /></div>
+
+  // Cuenta recién registrada: todavía no tiene notas
+  if (!estudiante) {
+    return (
+      <div className="pg-visual-notas">
+        <Encabezado nombre={usuario.nombre} rol={`Estudiante · ${usuario.grado}° Grado`} />
+        <main className="contenido">
+          <h1>Mis notas</h1>
+          <p>Aún no tienes notas registradas. Cuando tus docentes las publiquen, aparecerán aquí.</p>
+        </main>
+      </div>
+    )
+  }
+
+  const resumen = resumenEstudiante(estudiante.materias)
 
   return (
-    <main className="visual-notas">
-      <Encabezado nombre="Juan Pérez" rol="Estudiante · Grado 9°" />
+    <div className="pg-visual-notas">
+      <Encabezado nombre={estudiante.nombre} rol={`Estudiante · ${estudiante.grado}`} />
 
-      <div className="vn-contenido">
-        <section className="vn-resumen">
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Promedio general</p>
-            <p className="vn-valor">
-              <span className={`vn-nota ${resumen.color}`}>{resumen.promedioGeneral}</span>
-            </p>
-          </article>
+      <main className="contenido">
+        <h1>Mis notas</h1>
 
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Materias</p>
-            <p className="vn-valor">{materias.length}</p>
-          </article>
-
-          <article className="vn-tarjeta">
-            <p className="vn-etiqueta">Materias en riesgo</p>
-            <p className="vn-valor">{resumen.materiasEnRiesgo.length}</p>
-          </article>
-        </section>
-
-        {/* Este aviso solo aparece si el estudiante va perdiendo alguna materia */}
-        {resumen.enRiesgo && (
-          <p className="vn-alerta">
-            Atención: vas perdiendo {resumen.materiasEnRiesgo.join(', ')}. Habla con tu docente.
-          </p>
-        )}
-
-        <section className="vn-tarjeta">
-          <h2>Mis notas por materia</h2>
-          <div className="vn-tabla-contenedor">
-            <table className="vn-tabla">
-              <thead>
-                <tr>
-                  <th>Materia</th>
-                  <th>Notas</th>
-                  <th>Promedio</th>
-                  <th>Tendencia</th>
-                </tr>
-              </thead>
-              <tbody>
-                {materias.map((m) => {
-                  const promedio = calcularPromedio(m.notas)
-                  return (
-                    <tr key={m.nombre}>
-                      <td>{m.nombre}</td>
-                      <td>{m.notas.join(' · ')}</td>
-                      <td>
-                        <span className={`vn-nota ${nivelColor(promedio)}`}>{promedio}</span>
-                      </td>
-                      <td>{flechas[calcularTendencia(m.notas)]}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+        <section className="resumen">
+          <div className="tarjeta">
+            <span className="etiqueta">Promedio general</span>
+            <NotaBadge nota={resumen.promedioGeneral} />
+          </div>
+          <div className="tarjeta">
+            <span className="etiqueta">Materias aprobadas</span>
+            <strong>{estudiante.materias.length - resumen.materiasEnRiesgo.length} de {estudiante.materias.length}</strong>
+          </div>
+          <div className="tarjeta">
+            <span className="etiqueta">Materias en riesgo</span>
+            <strong>{resumen.materiasEnRiesgo.length}</strong>
           </div>
         </section>
-      </div>
-    </main>
+
+        <div className="tabla-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Materia</th>
+                <th>Nota 1</th>
+                <th>Nota 2</th>
+                <th>Nota 3</th>
+                <th>Promedio</th>
+                <th>Tendencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              {estudiante.materias.map((m) => (
+                <tr key={m.nombre}>
+                  <td>{m.nombre}</td>
+                  {m.notas.map((nota, i) => (
+                    <td key={i}><NotaBadge nota={nota} /></td>
+                  ))}
+                  <td><NotaBadge nota={calcularPromedio(m.notas)} /></td>
+                  <td>{ICONOS_TENDENCIA[calcularTendencia(m.notas)]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
   )
 }
 

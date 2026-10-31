@@ -1,0 +1,28 @@
+/* Estilos de NotaBadge. Prefijo "ui-" para no chocar con los estilos de las páginas (pg-...). */
+.ui-nota {
+  display: inline-block;
+  min-width: 46px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+}
+.ui-nota-verde {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+.ui-nota-amarillo {
+  background: rgba(250, 204, 21, 0.18);
+  color: #facc15;
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+.ui-nota-rojo {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.ui-nota-vacia {
+  color: #94a3b8;
+}

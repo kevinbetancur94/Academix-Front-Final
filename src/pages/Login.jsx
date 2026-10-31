@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { iniciarSesion } from '../services/authService.js'
+import { useAuth } from '../hooks/useAuth.js'
+import { RUTA_INICIO } from '../utils/roles.js'
 import '../css/login.css'
 
-// Cada rol lleva a una página distinta.
+// Los tres tipos de usuario. Cada rol lleva a su propia página (RUTA_INICIO en utils/roles.js).
 const roles = [
-  { id: 'estudiante', texto: 'Estudiante', ruta: '/estudiante' },
-  { id: 'docente', texto: 'Docente', ruta: '/docente' },
-  { id: 'acudiente', texto: 'Acudiente', ruta: '/acudiente' },
+  { id: 'estudiante', texto: 'Estudiante' },
+  { id: 'docente', texto: 'Docente' },
+  { id: 'acudiente', texto: 'Acudiente' },
 ]
 
 function Login() {
@@ -19,11 +20,12 @@ function Login() {
   const [error, setError] = useState('')
   const [enviando, setEnviando] = useState(false)
   const navigate = useNavigate() // permite cambiar de página desde el código
+  const { iniciar } = useAuth() // guarda la sesión para toda la app
 
   async function manejarEnvio(evento) {
     evento.preventDefault() // evita que el formulario recargue la página
     if (usuario.trim() === '' || password === '') {
-      setError('Ingresa tu usuario y tu contraseña')
+      setError('Ingresa tu correo y tu contraseña')
       return
     }
 
@@ -35,9 +37,8 @@ function Login() {
     setError('')
     setEnviando(true) // feedback visual: el botón se deshabilita y cambia el texto
     try {
-      await iniciarSesion(datos) // el componente NO hace fetch: llama al servicio
-      const elegido = roles.find((r) => r.id === rol)
-      navigate(elegido.ruta)
+      const sesion = await iniciar(datos) // el componente NO hace fetch: pasa por el servicio
+      navigate(RUTA_INICIO[sesion.rol])
     } catch (err) {
       setError(err.message)
       setEnviando(false)
@@ -67,11 +68,11 @@ function Login() {
           </div>
 
           <div className="form-group">
-            <label htmlFor="usuario">Usuario</label>
+            <label htmlFor="usuario">Correo electrónico</label>
             <input
               type="text"
               id="usuario"
-              placeholder="Ingresa tu usuario"
+              placeholder="Ingresa tu correo"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value)}
             />
@@ -107,6 +108,15 @@ function Login() {
             {enviando ? 'Ingresando...' : 'Iniciar Sesión'}
           </button>
         </form>
+
+        <details className="cuentas-prueba">
+          <summary>Cuentas de prueba</summary>
+          <ul>
+            <li><strong>Estudiante:</strong> estudiante@academix.com / Estudiante123</li>
+            <li><strong>Docente:</strong> docente@academix.com / Docente123</li>
+            <li><strong>Acudiente:</strong> acudiente@academix.com / Acudiente123</li>
+          </ul>
+        </details>
       </div>
     </div>
   )

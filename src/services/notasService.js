@@ -1,21 +1,25 @@
-// Servicios de notas: lista de estudiantes del docente y registro de una nota nueva.
+// Servicios del Panel Docente: materias, estudiantes y guardado de calificaciones.
 import { USAR_MOCK } from '../config.js'
-import { estudiantes } from '../data/estudiantes.js'
-import { esNotaValida } from '../utils/notas.js'
+import { materiasDocente, estudiantesPorMateria } from '../data/estudiantes.js'
 import { peticion, simularRespuesta, simularError } from './api.js'
 
-export function obtenerEstudiantes() {
-  if (USAR_MOCK) return simularRespuesta(estudiantes)
-  return peticion('/estudiantes')
+export function obtenerMateriasDocente() {
+  if (USAR_MOCK) return simularRespuesta(materiasDocente)
+  return peticion('/docente/materias')
 }
 
-// registro = { estudianteId, nota }
-export function registrarNota(registro) {
+// materiaId = 'mat-10a'... Devuelve los estudiantes de esa materia con sus notas.
+export function obtenerEstudiantesDocente(materiaId) {
   if (USAR_MOCK) {
-    if (!esNotaValida(registro.nota)) {
-      return simularError('La nota debe estar entre 1.0 y 5.0')
-    }
-    return simularRespuesta({ ok: true, ...registro })
+    const estudiantes = estudiantesPorMateria[materiaId]
+    if (!estudiantes) return simularError('No encontramos esa materia.')
+    return simularRespuesta(estudiantes)
   }
-  return peticion('/notas', { method: 'POST', body: registro })
+  return peticion(`/docente/materias/${materiaId}/estudiantes`)
+}
+
+// datos = { materiaId, calificaciones: [{ id, notas: [..], observacion }] }
+export function guardarCalificaciones(datos) {
+  if (USAR_MOCK) return simularRespuesta({ ok: true, guardados: datos.calificaciones.length })
+  return peticion('/docente/calificaciones', { method: 'PUT', body: datos })
 }

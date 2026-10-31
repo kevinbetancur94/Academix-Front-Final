@@ -1,151 +1,172 @@
-/* Estilos del panel docente */
-.panel-docente {
+/* Estilos de esta página. Todos los selectores empiezan con .pg-panel-docente para que no choquen con los de otras páginas. */
+.pg-panel-docente, .pg-panel-docente * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.pg-panel-docente {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
   min-height: 100vh;
-  padding: 32px 24px;
-  background: #f5f7fa;
-  color: #263447;
-  font-family: Arial, sans-serif;
 }
 
-.panel-docente .header,
-.panel-contenido {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* Encabezado con logo y usuario */
-.panel-docente .header {
+/* Encabezado (componente Encabezado: logo + nombre + rol) */
+.pg-panel-docente .header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 16px 40px;
+  border-bottom: 2px solid rgba(0, 212, 255, 0.3);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  align-items: center;
+  gap: 15px;
 }
-
-.panel-docente .header-logo img {
-  height: 48px;
+.pg-panel-docente .header-logo img {
+  height: 46px;
+  border-radius: 6px;
+  display: block;
 }
-
-.panel-docente .user-info {
+.pg-panel-docente .user-info {
   text-align: right;
 }
-
-.panel-docente .name {
-  font-weight: 700;
+.pg-panel-docente .user-info .name {
+  font-weight: 600;
+}
+.pg-panel-docente .user-info .role {
+  color: #00d4ff;
+  font-size: 13px;
 }
 
-.panel-docente .role {
-  color: #687588;
-  font-size: 14px;
+.pg-panel-docente .contenido {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px 50px;
+}
+.pg-panel-docente h1 {
+  color: #00d4ff;
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-.panel-tarjeta {
-  margin-bottom: 24px;
-  padding: 24px;
-  background: #fff;
-  border: 1px solid #e4e9ef;
+/* Tablas */
+.pg-panel-docente .tabla-scroll {
+  overflow-x: auto;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
-  box-shadow: 0 4px 14px rgb(30 50 70 / 5%);
+}
+.pg-panel-docente table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+.pg-panel-docente th {
+  text-align: left;
+  padding: 14px;
+  background: rgba(0, 212, 255, 0.12);
+  color: #00d4ff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.pg-panel-docente td {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.pg-panel-docente tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-.panel-tarjeta h2 {
-  margin-top: 0;
-}
-
-/* Formulario para registrar notas */
-.panel-formulario {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: flex-end;
-}
-
-.panel-formulario label {
+/* Selector de materia */
+.pg-panel-docente .selector-materia {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-width: 340px;
+  margin-bottom: 22px;
+}
+.pg-panel-docente .selector-materia label {
+  color: #e2e8f0;
   font-size: 14px;
 }
-
-.panel-formulario select,
-.panel-formulario input {
-  padding: 10px;
-  border: 1px solid #cfd8e3;
+.pg-panel-docente select {
+  padding: 11px;
   border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #16213e;
+  color: #fff;
   font-size: 15px;
 }
 
-.panel-formulario button {
-  padding: 11px 20px;
-  border: none;
+/* Campos de la tabla */
+.pg-panel-docente .campo-nota {
+  width: 70px;
+  padding: 8px;
+  text-align: center;
   border-radius: 8px;
-  background: #357a68;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
   color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
+  font-size: 15px;
 }
-
-.panel-formulario button:hover {
-  background: #2a6254;
-}
-
-/* Mensajes de éxito y error */
-.panel-mensaje {
-  margin-top: 16px;
-  padding: 12px;
-  border-radius: 8px;
-}
-
-.panel-mensaje.exito {
-  background: #e3f4ec;
-  color: #1f6b4a;
-}
-
-.panel-mensaje.error {
-  background: #fde8e8;
-  color: #a12b2b;
-}
-
-/* Tabla de estudiantes: en celular se puede deslizar de lado */
-.panel-tabla-contenedor {
-  overflow-x: auto;
-}
-
-.panel-tabla {
+.pg-panel-docente .campo-obs {
   width: 100%;
-  border-collapse: collapse;
-}
-
-.panel-tabla th,
-.panel-tabla td {
-  padding: 12px;
-  border-bottom: 1px solid #e4e9ef;
-  text-align: left;
-}
-
-.panel-tabla th {
-  color: #687588;
+  min-width: 170px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   font-size: 14px;
 }
-
-/* Color del promedio según la nota */
-.promedio {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: 700;
+.pg-panel-docente .campo-nota:focus,
+.pg-panel-docente .campo-obs:focus,
+.pg-panel-docente select:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.25);
+}
+/* Nota fuera de 1.0 - 5.0: se marca en rojo */
+.pg-panel-docente .campo-nota.invalida {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.2);
+  color: #fecaca;
 }
 
-.promedio.verde {
-  background: #e3f4ec;
-  color: #1f6b4a;
+/* Mensajes y botón */
+.pg-panel-docente .aviso-error {
+  margin-top: 14px;
+  color: #fca5a5;
+}
+.pg-panel-docente .aviso-ok {
+  margin-top: 14px;
+  color: #4ade80;
+}
+.pg-panel-docente .btn-guardar {
+  margin-top: 18px;
+  padding: 13px 28px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00d4ff, #0099cc);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.pg-panel-docente .btn-guardar:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
 }
 
-.promedio.amarillo {
-  background: #fff4d6;
-  color: #8a6400;
-}
-
-.promedio.rojo {
-  background: #fde8e8;
-  color: #a12b2b;
+@media (max-width: 600px) {
+  .pg-panel-docente .header {
+    padding: 14px 16px;
+  }
+  .pg-panel-docente h1 {
+    font-size: 23px;
+  }
+  .pg-panel-docente .btn-guardar {
+    width: 100%;
+  }
 }

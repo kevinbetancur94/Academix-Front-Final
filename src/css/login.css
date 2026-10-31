@@ -151,3 +151,22 @@
     font-size: 14px;
     margin-bottom: 12px;
 }
+
+/* Cuentas de prueba (para la demo) */
+.pg-login .cuentas-prueba {
+    margin-top: 22px;
+    color: #a0aec0;
+    font-size: 13px;
+}
+.pg-login .cuentas-prueba summary {
+    cursor: pointer;
+    color: #00d4ff;
+}
+.pg-login .cuentas-prueba ul {
+    list-style: none;
+    margin-top: 10px;
+}
+.pg-login .cuentas-prueba li {
+    margin-bottom: 6px;
+    word-break: break-word;
+}

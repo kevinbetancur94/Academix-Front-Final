@@ -1,20 +1,23 @@
 import { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.js'
+import { ENLACES_POR_ROL, NOMBRE_ROL } from '../utils/roles.js'
 import '../css/navbar.css'
-
-// Los enlaces del menú. Para agregar una página al menú solo se agrega una línea aquí.
-const enlaces = [
-  { to: '/', texto: 'Inicio' },
-  { to: '/estudiante', texto: 'Mis Notas' },
-  { to: '/docente', texto: 'Docente' },
-  { to: '/acudiente', texto: 'Acudiente' },
-  { to: '/calendario', texto: 'Calendario' },
-  { to: '/login', texto: 'Salir' },
-]
 
 function Navbar() {
   // En celulares el menú está cerrado y se abre con el botón ☰
   const [abierto, setAbierto] = useState(false)
+  const { usuario, cerrar } = useAuth()
+  const navigate = useNavigate()
+
+  // Cada rol ve SOLO sus enlaces (definidos en utils/roles.js).
+  // Para agregar una página al menú de un rol, se agrega una línea allá.
+  const enlaces = [{ to: '/', texto: 'Inicio' }, ...(ENLACES_POR_ROL[usuario.rol] ?? [])]
+
+  function salir() {
+    cerrar()
+    navigate('/login')
+  }
 
   return (
     <nav className="ui-navbar">
@@ -41,6 +44,14 @@ function Navbar() {
               </NavLink>
             </li>
           ))}
+          <li className="ui-navbar-usuario">
+            {usuario.nombre} · {NOMBRE_ROL[usuario.rol]}
+          </li>
+          <li>
+            <button className="ui-navbar-salir" onClick={salir}>
+              Salir
+            </button>
+          </li>
         </ul>
       </div>
     </nav>

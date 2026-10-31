@@ -1,4 +1,5 @@
 // Funciones para calcular notas. Escala colombiana: de 1.0 a 5.0, se gana con 3.0
+// Son funciones "puras": reciben datos y devuelven un resultado, sin nada visual.
 
 // Constantes: valores fijos que usamos en todo el archivo
 export const NOTA_MINIMA = 1.0
@@ -36,6 +37,13 @@ export function calcularTendencia(notas) {
   if (diferencia > 0.2) return 'sube'
   if (diferencia < -0.2) return 'baja'
   return 'estable'
+}
+
+// Símbolo que se muestra para cada tendencia (lo usan VisualNotas y DetalleHijo)
+export const ICONOS_TENDENCIA = {
+  sube: '⬆️',
+  baja: '⬇️',
+  estable: '➡️',
 }
 
 // Recibe las materias de un estudiante, por ejemplo:

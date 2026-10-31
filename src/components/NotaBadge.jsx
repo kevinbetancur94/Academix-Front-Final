@@ -1,22 +1,13 @@
 import { nivelColor } from '../utils/notas.js'
+import '../css/notas.css'
 
-// Colores para cada nivel de nota (verde = bien, amarillo = aprobó justo, rojo = perdió)
-const colores = {
-  verde: { background: '#e3f4ec', color: '#1f6b4a' },
-  amarillo: { background: '#fff4d6', color: '#8a6400' },
-  rojo: { background: '#fde8e8', color: '#a12b2b' },
-}
-
-// Muestra una nota como una "etiqueta" de color.
-// Uso: <NotaBadge valor={4.5} />
-function NotaBadge({ valor }) {
-  const estilo = {
-    ...colores[nivelColor(valor)],
-    padding: '4px 10px',
-    borderRadius: '999px',
-    fontWeight: 700,
+// Muestra una nota con su color: verde (>= 4.0), amarillo (>= 3.0) o rojo (< 3.0).
+// El cálculo del color vive en utils/notas.js; este componente solo lo dibuja.
+function NotaBadge({ nota }) {
+  if (nota === null || nota === undefined || nota === '') {
+    return <span className="ui-nota ui-nota-vacia">—</span>
   }
-  return <span style={estilo}>{valor.toFixed(1)}</span>
+  return <span className={`ui-nota ui-nota-${nivelColor(nota)}`}>{Number(nota).toFixed(1)}</span>
 }
 
 export default NotaBadge

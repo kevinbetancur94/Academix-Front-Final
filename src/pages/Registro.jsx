@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { registrarUsuario } from '../services/authService.js'
+import { grados } from '../data/calendario.js'
 import '../css/registro.css'
 
 const departamentos = ['Antioquia', 'Cundinamarca', 'Valle del Cauca', 'Santander', 'Bolivar']
@@ -18,6 +19,7 @@ const formularioVacio = {
   password: '',
   confirmar: '',
   rol: 'estudiante',
+  grado: '',
   departamento: '',
   ciudad: '',
 }
@@ -93,6 +95,19 @@ function Registro() {
               ))}
             </div>
           </div>
+
+          {/* El grado solo se pide a los estudiantes (el calendario muestra las tareas de su grado) */}
+          {form.rol === 'estudiante' && (
+            <>
+              <label htmlFor="grado">Grado</label>
+              <select id="grado" name="grado" value={form.grado} onChange={manejarCambio} required>
+                <option value="">Seleccione Grado</option>
+                {grados.map((g) => (
+                  <option key={g} value={g}>{g}° Grado</option>
+                ))}
+              </select>
+            </>
+          )}
 
           <label htmlFor="departamento">Departamento</label>
           <select id="departamento" name="departamento" value={form.departamento} onChange={manejarCambio}>

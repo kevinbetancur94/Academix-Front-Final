@@ -4,7 +4,7 @@ import MensajeError from '../components/MensajeError.jsx'
 import { useCargarDatos } from '../hooks/useCargarDatos.js'
 import { materias, tipos, grados } from '../data/calendario.js'
 import { obtenerTareas, obtenerFestivos, crearTarea } from '../services/calendarioService.js'
-import { iniciarSesion } from '../services/authService.js'
+import { useAuth } from '../hooks/useAuth.js'
 import '../css/calendario.css'
 
 const NOMBRES_MES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -59,49 +59,21 @@ function Calendario() {
 function CalendarioContenido({ tareasIniciales, festivos }) {
   // El calendario arranca en octubre de 2025 porque ahí están los datos de ejemplo.
   const [vista, setVista] = useState({ anio: 2025, mes: 9 })
-  const [usuario, setUsuario] = useState(null) // null | { tipo: 'estudiante', grado } | { tipo: 'profesor' }
-  const [modal, setModal] = useState(null) // null | 'estudiante' | 'profesor' | 'tarea'
-  const [login, setLogin] = useState({ id: '', password: '', grado: '' })
+  const { usuario } = useAuth() // la sesión viene del login: ya no hay que "ingresar" aquí
+  const [modal, setModal] = useState(null) // null | 'tarea'
   const [tareas, setTareas] = useState(tareasIniciales)
   const [nuevaTarea, setNuevaTarea] = useState(tareaVacia)
   const [filtros, setFiltros] = useState({ materia: null, tipo: null, grado: null })
   const [alerta, setAlerta] = useState(null)
   const [enviando, setEnviando] = useState(false)
 
-  const esProfesor = usuario?.tipo === 'profesor'
+  // Solo el docente puede programar tareas y filtrar por grado; el estudiante solo consulta las de su grado.
+  const esProfesor = usuario.rol === 'docente'
 
   // --- Navegación entre meses ---
   function cambiarMes(delta) {
     const fecha = new Date(vista.anio, vista.mes + delta, 1)
     setVista({ anio: fecha.getFullYear(), mes: fecha.getMonth() })
-  }
-
-  // --- Sesión ---
-  function abrirModal(nombre) {
-    setLogin({ id: '', password: '', grado: '' })
-    setModal(nombre)
-  }
-
-  async function ingresar(tipo) {
-    if (login.id.trim() === '' || login.password === '' || (tipo === 'estudiante' && login.grado === '')) {
-      setAlerta('Completa todos los campos para ingresar')
-      return
-    }
-    console.log('Datos del formulario de ingreso al calendario:', { tipo, ...login })
-    setEnviando(true)
-    try {
-      await iniciarSesion({ usuario: login.id, password: login.password, rol: tipo })
-      setUsuario(tipo === 'estudiante' ? { tipo, grado: login.grado } : { tipo })
-      setModal(null)
-    } catch (err) {
-      setAlerta(err.message)
-    }
-    setEnviando(false)
-  }
-
-  function cerrarSesion() {
-    setUsuario(null)
-    setFiltros({ materia: null, tipo: null, grado: null })
   }
 
   // --- Filtros: al hacer clic en una opción activa se desactiva ---
@@ -131,7 +103,7 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
 
   // Tareas que ve la persona: el estudiante solo las de su grado; el profesor puede filtrar por grado.
   const tareasVisibles = tareas
-    .filter((t) => (usuario?.tipo === 'estudiante' ? t.grado === usuario.grado : true))
+    .filter((t) => (usuario.rol === 'estudiante' ? t.grado === usuario.grado : true))
     .filter((t) => !filtros.materia || t.materia === filtros.materia)
     .filter((t) => !filtros.tipo || t.tipo === filtros.tipo)
     .filter((t) => !filtros.grado || t.grado === filtros.grado)
@@ -148,43 +120,16 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
           <div className="header-logo">
             <img src="/academixlogo.jpg" alt="Academix Logo" />
           </div>
-          {usuario ? (
-            <div className="user-info" style={{ display: 'flex' }}>
-              <span className="user-badge">
-                {esProfesor ? '👩‍🏫 Profesor' : `👨‍🎓 Estudiante - ${usuario.grado}° Grado`}
-              </span>
-              <button className="logout-btn" onClick={cerrarSesion}>Cerrar Sesión</button>
-            </div>
-          ) : (
-            <div className="auth-buttons">
-              <button className="btn btn-primary" onClick={() => abrirModal('estudiante')}>Ingreso Estudiante</button>
-              <button className="btn btn-secondary" onClick={() => abrirModal('profesor')}>Ingreso Profesor</button>
-            </div>
-          )}
+          <div className="user-info" style={{ display: 'flex' }}>
+            <span className="user-badge">
+              {esProfesor ? '👩‍🏫 Docente' : `👨‍🎓 Estudiante - ${usuario.grado}° Grado`}
+            </span>
+          </div>
         </div>
       </header>
 
       <div className="container">
-        {!usuario && (
-          <div className="welcome-section">
-            <h1>¡Hola! Bienvenidos a tu Calendario Escolar</h1>
-            <p>Ingresa tu documento de identificación y selecciona tu grado, luego dale <strong style={{ color: '#00d4ff' }}>Ingresar</strong></p>
-            <div className="cards-container">
-              <div className="info-card">
-                <div className="icon">👨‍🎓</div>
-                <h3>Estudiantes</h3>
-                <p>Consulta tus tareas y fechas de entrega organizadas por materia</p>
-              </div>
-              <div className="info-card">
-                <div className="icon">👩‍🏫</div>
-                <h3>Profesores</h3>
-                <p>Gestiona y programa las actividades escolares</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className={`dashboard ${usuario ? 'active' : ''}`}>
+        <div className="dashboard active">
           <div className="calendar-container">
             <div className="top-section">
               <div className="sidebar">
@@ -252,38 +197,6 @@ function CalendarioContenido({ tareasIniciales, festivos }) {
           </div>
         </div>
       </div>
-
-      {/* Modal de ingreso (estudiante o profesor) */}
-      {(modal === 'estudiante' || modal === 'profesor') && (
-        <div className="modal active">
-          <div className="modal-content">
-            <span className="close-modal" onClick={() => setModal(null)}>&times;</span>
-            <div className="modal-header">{modal === 'estudiante' ? 'Ingreso Estudiante' : 'Ingreso Profesor'}</div>
-            <div className="form-group">
-              <label>Documento de Identidad</label>
-              <input type="text" placeholder="Ej: 123456789" value={login.id} onChange={(e) => setLogin({ ...login, id: e.target.value })} />
-            </div>
-            <div className="form-group">
-              <label>Contraseña</label>
-              <input type="password" placeholder="Ingresa tu contraseña" value={login.password} onChange={(e) => setLogin({ ...login, password: e.target.value })} />
-            </div>
-            {modal === 'estudiante' && (
-              <div className="form-group">
-                <label>Grado</label>
-                <select value={login.grado} onChange={(e) => setLogin({ ...login, grado: e.target.value })}>
-                  <option value="">Selecciona tu grado</option>
-                  {grados.map((g) => (
-                    <option key={g} value={g}>{g}° Grado</option>
-                  ))}
-                </select>
-              </div>
-            )}
-            <button className="btn btn-primary" style={{ width: '100%', marginTop: '10px' }} onClick={() => ingresar(modal)} disabled={enviando}>
-              {enviando ? 'Ingresando...' : 'Ingresar'}
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Modal para agregar tarea (solo profesor) */}
       {modal === 'tarea' && (

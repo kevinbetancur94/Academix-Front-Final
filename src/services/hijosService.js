@@ -1,18 +1,29 @@
-// Servicios de los hijos del acudiente: la lista completa y el detalle de uno.
+// Servicios de los estudiantes: notas del estudiante y hijos del acudiente.
 import { USAR_MOCK } from '../config.js'
 import { hijos } from '../data/hijos.js'
 import { peticion, simularRespuesta, simularError } from './api.js'
 
-export function obtenerHijos() {
-  if (USAR_MOCK) return simularRespuesta(hijos)
-  return peticion('/hijos')
+// Notas del estudiante que inició sesión. Si su cuenta todavía no tiene notas devuelve null.
+export function obtenerMisNotas(estudianteId) {
+  if (USAR_MOCK) {
+    if (!estudianteId) return simularRespuesta(null)
+    const estudiante = hijos.find((h) => h.id === estudianteId)
+    return simularRespuesta(estudiante ?? null)
+  }
+  return peticion('/estudiante/notas')
 }
 
-// id = el que viene en la URL, por ejemplo /acudiente/juan → 'juan'
+// Hijos de UN acudiente (cada acudiente solo recibe a los suyos).
+export function obtenerHijos(acudienteId) {
+  if (USAR_MOCK) return simularRespuesta(hijos.filter((h) => h.acudienteId === acudienteId))
+  return peticion(`/acudientes/${acudienteId}/hijos`)
+}
+
+// id = 'juan', 'sofia'... (el mismo que aparece en la URL /acudiente/:hijoId)
 export function obtenerHijo(id) {
   if (USAR_MOCK) {
     const hijo = hijos.find((h) => h.id === id)
-    if (!hijo) return simularError('No encontramos a este estudiante')
+    if (!hijo) return simularError('No encontramos información para este estudiante.')
     return simularRespuesta(hijo)
   }
   return peticion(`/hijos/${id}`)

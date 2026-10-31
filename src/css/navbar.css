@@ -76,3 +76,30 @@
     display: flex;
   }
 }
+
+/* Usuario que inició sesión y botón Salir (agregados con los roles) */
+.ui-navbar-usuario {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+.ui-navbar-salir {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.ui-navbar-salir:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+@media (max-width: 768px) {
+  .ui-navbar-usuario {
+    padding: 8px 0;
+  }
+}

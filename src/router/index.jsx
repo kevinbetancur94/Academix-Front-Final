@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import LayoutApp from '../components/LayoutApp.jsx'
+import RutaProtegida from '../components/RutaProtegida.jsx'
 import Inicio from '../pages/Inicio.jsx'
 import Login from '../pages/Login.jsx'
 import Registro from '../pages/Registro.jsx'
@@ -26,15 +27,31 @@ export const router = createBrowserRouter([
       { path: '/registro', element: <Registro /> },
       { path: '/recuperacion', element: <Recuperacion /> },
 
-      // --- Páginas internas (con Navbar gracias a LayoutApp) ---
+      // --- Páginas internas: cada grupo solo es accesible para su(s) rol(es) ---
+      // RutaProtegida revisa la sesión; LayoutApp pone el Navbar de ese rol.
       {
         element: <LayoutApp />,
         children: [
-          { path: '/estudiante', element: <VisualNotas /> },
-          { path: '/docente', element: <PanelDocente /> },
-          { path: '/acudiente', element: <AcudienteLista /> },
-          { path: '/acudiente/:hijoId', element: <DetalleHijo /> }, // página de DETALLE (parámetro en la URL)
-          { path: '/calendario', element: <Calendario /> },
+          {
+            element: <RutaProtegida roles={['estudiante']} />,
+            children: [{ path: '/estudiante', element: <VisualNotas /> }],
+          },
+          {
+            element: <RutaProtegida roles={['docente']} />,
+            children: [{ path: '/docente', element: <PanelDocente /> }],
+          },
+          {
+            element: <RutaProtegida roles={['acudiente']} />,
+            children: [
+              { path: '/acudiente', element: <AcudienteLista /> },
+              { path: '/acudiente/:hijoId', element: <DetalleHijo /> }, // página de DETALLE (parámetro en la URL)
+            ],
+          },
+          {
+            // El calendario lo usan estudiantes (solo consultan) y docentes (también programan)
+            element: <RutaProtegida roles={['estudiante', 'docente']} />,
+            children: [{ path: '/calendario', element: <Calendario /> }],
+          },
         ],
       },
 
