@@ -24,6 +24,7 @@ export const ENLACES_POR_ROL = {
   ],
   docente: [
     { to: '/docente', texto: 'Panel Docente' },
+    { to: '/reportes', texto: 'Reportes' },
     { to: '/calendario', texto: 'Calendario' },
   ],
   acudiente: [{ to: '/acudiente', texto: 'Mis Hijos' }],

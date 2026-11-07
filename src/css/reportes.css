@@ -1,0 +1,7 @@
+.reportes { max-width: 1200px; margin: 0 auto; padding: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #fff; }
+.reportes-barra { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+.reportes-barra h1 { margin: 0; font-size: 1.5rem; color: #00d4ff; }
+.reportes-barra a { color: #00d4ff; text-decoration: none; padding: 8px 14px; border: 1px solid rgba(0, 212, 255, 0.4); border-radius: 8px; transition: 0.2s; }
+.reportes-barra a:hover { background: #00d4ff; color: #16213e; }
+.reportes-frame { width: 100%; height: calc(100vh - 160px); min-height: 500px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; margin-top: 14px; background: #1a1a2e; }
+.reportes-fondo { min-height: calc(100vh - 60px); background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }

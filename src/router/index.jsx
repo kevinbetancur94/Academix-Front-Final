@@ -10,6 +10,7 @@ import PanelDocente from '../pages/PanelDocente.jsx'
 import AcudienteLista from '../pages/AcudienteLista.jsx'
 import DetalleHijo from '../pages/DetalleHijo.jsx'
 import Calendario from '../pages/Calendario.jsx'
+import Reportes from '../pages/Reportes.jsx'
 import ErrorPage from '../pages/ErrorPage.jsx'
 
 // Mapa de la aplicación en forma de OBJETOS (API moderna de react-router v6.4+).
@@ -38,7 +39,10 @@ export const router = createBrowserRouter([
           },
           {
             element: <RutaProtegida roles={['docente']} />,
-            children: [{ path: '/docente', element: <PanelDocente /> }],
+            children: [
+              { path: '/docente', element: <PanelDocente /> },
+              { path: '/reportes', element: <Reportes /> }, // reporte analítico generado con Python
+            ],
           },
           {
             element: <RutaProtegida roles={['acudiente']} />,
